@@ -1,0 +1,300 @@
+| textbox            |
+| trg_emp_audit      |
+| viraj              |
+| vish               |
+| xyz                |
++--------------------+
+52 rows in set (1.29 sec)
+
+mysql> use player
+Database changed
+mysql> ;
+ERROR:
+No query specified
+
+mysql> use player;
+Database changed
+mysql> create table textdatatypes(A char(10),b varchar(10),C text);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> create table textdatatypes;
+ERROR 1113 (42000): A table must have at least 1 column
+mysql> use player;
+Database changed
+mysql> create table textdatatypes(A char(10),b varchar(10),C text);
+ERROR 1050 (42S01): Table 'textdatatypes' already exists
+mysql> create table datatypes(A char(10),b varchar(10),C text);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into datatypes values('123','456','Khabib');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into datatypes values('987','98','McReggor');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from datatypes;
++------+------+----------+
+| A    | b    | C        |
++------+------+----------+
+| 123  | 456  | Khabib   |
+| 987  | 98   | McReggor |
++------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select length(A),length(B)
+    -> from datatypes;
++-----------+-----------+
+| length(A) | length(B) |
++-----------+-----------+
+|         3 |         3 |
+|         3 |         2 |
++-----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select length(A),length(B),length(C);
+ERROR 1054 (42S22): Unknown column 'A' in 'field list'
+mysql> select length(A),length(B),length(C)
+    -> from datatypes;
++-----------+-----------+-----------+
+| length(A) | length(B) | length(C) |
++-----------+-----------+-----------+
+|         3 |         3 |         6 |
+|         3 |         2 |         8 |
++-----------+-----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> create table tinydatatypes
+    -> (
+    -> A tinyint,
+    -> B smallint,
+    -> C midint,
+    -> D int,
+    -> E bigint,
+    -> F decimal(5,2),
+    -> G double(5,2),
+    -> H float
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'midint,
+D int,
+E bigint,
+F decimal(5,2),
+G double(5,2),
+H float
+)' at line 5
+mysql> create table tinydatatypes
+    -> (
+    -> A tinyint,
+    -> B smallint,
+    -> C mediumint,
+    -> D int,
+    -> E bigint,
+    -> F decimal(5,2),
+    -> G double(5,2),
+    -> H float
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into tinydatatypes values(11,123,12345,123456,12345678,123.45,123.45,123.45);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *
+    -> from tinydatatypes;
++------+------+-------+--------+----------+--------+--------+--------+
+| A    | B    | C     | D      | E        | F      | G      | H      |
++------+------+-------+--------+----------+--------+--------+--------+
+|   11 |  123 | 12345 | 123456 | 12345678 | 123.45 | 123.45 | 123.45 |
++------+------+-------+--------+----------+--------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> create table datetypes
+    -> (
+    -> V date,
+    -> X datetime,
+    -> Y timetamp,
+    -> Z time
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'timetamp,
+Z time
+)' at line 5
+mysql> create table datetypes
+    -> (
+    -> V date,
+    -> X datetime,
+    -> Y timestamp,
+    -> Z time
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into datetypes values(current_date(),now(),now(),now());
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *
+    -> from datetypes;
++------------+---------------------+---------------------+----------+
+| V          | X                   | Y                   | Z        |
++------------+---------------------+---------------------+----------+
+| 2019-08-26 | 2019-08-26 19:11:33 | 2019-08-26 19:11:33 | 19:11:33 |
++------------+---------------------+---------------------+----------+
+1 row in set (0.02 sec)
+
+mysql> insert into datetypes values('1996-02-22','1996-02-22 04:15:35','19960222041535','04:15:33');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select *
+    -> from datetypes;
++------------+---------------------+---------------------+----------+
+| V          | X                   | Y                   | Z        |
++------------+---------------------+---------------------+----------+
+| 2019-08-26 | 2019-08-26 19:11:33 | 2019-08-26 19:11:33 | 19:11:33 |
+| 1996-02-22 | 1996-02-22 04:15:35 | 1996-02-22 04:15:35 | 04:15:33 |
++------------+---------------------+---------------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> create table spldatatypes
+    -> (
+    -> id int auto_increment
+    -> membership enum('Silver','Gold','Platinum')
+    -> hobbies set('Swim','Table_Tenis','Cooking')
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'membership enum('Silver','Gold','Platinum')
+hobbies set('Swim','Table_Tenis','Co' at line 4
+mysql> create table spldatatypes
+    -> (
+    -> id int auto_increment,
+    -> membership enum('Silver','Gold','Platinum'),
+    -> hobbies set('Swim','Table_Tenis','Cooking')
+    -> );
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table spldatatypes
+    -> (
+    -> id int auto_increment primary key,
+    -> membership enum('Silver','Gold','Platinum'),
+    -> hobbies set('Swim','Table_Tenis','Cooking')
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert spldatatypes
+    -> (membership,hobbies) values
+    -> ('Silver','Swim');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *
+    -> from spldatatypes;
++----+------------+---------+
+| id | membership | hobbies |
++----+------------+---------+
+|  1 | Silver     | Swim    |
++----+------------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert spldatatypes
+    -> (membership,hobbies) values
+    -> ('Platinum','Cooking');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *
+    -> from spldatatypes;
++----+------------+---------+
+| id | membership | hobbies |
++----+------------+---------+
+|  1 | Silver     | Swim    |
+|  2 | Platinum   | Cooking |
++----+------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> insert spldatatypes
+    -> (membership,hobbies) values
+    -> ('Most_Liked','Trekking');
+ERROR 1265 (01000): Data truncated for column 'membership' at row 1
+mysql> insert spldatatypes
+    -> (membership,hobbies) values
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> insert spldatatypes
+    -> (hobbies,membership) values
+    -> ('Table_tenis','Gold');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *
+    -> from spldatatypes;
++----+------------+-------------+
+| id | membership | hobbies     |
++----+------------+-------------+
+|  1 | Silver     | Swim        |
+|  2 | Platinum   | Cooking     |
+|  3 | Gold       | Table_Tenis |
++----+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> update spldatatypes
+    -> set membership='Bronze'
+    -> where id=3;
+ERROR 1265 (01000): Data truncated for column 'membership' at row 1
+mysql> select *
+    -> from spldatatypes
+    -> order by hobbies;
++----+------------+-------------+
+| id | membership | hobbies     |
++----+------------+-------------+
+|  1 | Silver     | Swim        |
+|  3 | Gold       | Table_Tenis |
+|  2 | Platinum   | Cooking     |
++----+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select *
+    -> from spldatatypes
+    -> order by hobbies asc;
++----+------------+-------------+
+| id | membership | hobbies     |
++----+------------+-------------+
+|  1 | Silver     | Swim        |
+|  3 | Gold       | Table_Tenis |
+|  2 | Platinum   | Cooking     |
++----+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> create table khabib
+    -> (
+    -> match_date int,
+    -> Khabib_Versus varchar(20)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> drop table khabib;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table khabib;
+ERROR 1113 (42000): A table must have at least 1 column
+mysql> create table khabib
+    -> (
+    -> On-Date date,
+    -> Khabib_Versus varchar(20)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'On-Date date,
+Khabib_Versus varchar(20)
+)' at line 3
+mysql> create table khabib
+    -> (
+    -> On_Date date,
+    -> Khabib_Versus varchar(20)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into khabib values('2019-08-31','McReggor');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into khabib values('2019-09-05','Numergorav');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select *
+    -> from khabib;
++------------+---------------+
+| On_Date    | Khabib_Versus |
++------------+---------------+
+| 2019-08-31 | McReggor      |
+| 2019-09-05 | Numergorav    |
++------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql>
